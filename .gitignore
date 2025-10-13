@@ -27,3 +27,6 @@ buildNumber.properties
 /out/
 .DS_Store
 src/.DS_Store
+
+#environment variable
+.env
