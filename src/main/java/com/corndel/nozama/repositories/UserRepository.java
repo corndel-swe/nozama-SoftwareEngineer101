@@ -37,19 +37,15 @@ public class UserRepository {
          var stmt = con.createStatement();
          var rs = stmt.executeQuery(query);) {
 
-      var users = new ArrayList<User>();
-      while (rs.next()) {
+
         var username = rs.getString("username");
         var firstName = rs.getString("firstName");
         var lastName = rs.getString("lastName");
         var email = rs.getString("email");
         var avatar = rs.getString("avatar");
 
-        users.add(new User(id, username, firstName, lastName, email, avatar));
-      }
-
-      return users.get(0);
+        
+      return new User(id, username, firstName, lastName, email, avatar);
     }
-
   }
 };
