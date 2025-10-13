@@ -12,7 +12,7 @@ public class UserRepository {
 
     try (var con = DB.getConnection();
         var stmt = con.createStatement();
-        var rs = stmt.executeQuery(query);) {
+        var rs = stmt.executeQuery(query)) {
 
       var users = new ArrayList<User>();
       while (rs.next()) {
@@ -44,7 +44,7 @@ public class UserRepository {
         var email = rs.getString("email");
         var avatar = rs.getString("avatar");
 
-        
+
       return new User(id, username, firstName, lastName, email, avatar);
     }
   }
