@@ -1,14 +1,19 @@
 package com.corndel.nozama.models;
 
 public class Product {
-    private final Integer id;
+    private  Integer id;
     private String name;
     private String description;
     private float price;
     private int stockQuantity;
     private String imageURL;
 
-        public Product(Integer id, String name, String description, float price, int stockQuantity, String imageURL) {
+    //POJO
+
+    public Product() {
+    };
+
+    public Product(Integer id, String name, String description, float price, int stockQuantity, String imageURL) {
             this.id = id;
             this.name = name;
             this.description = description;

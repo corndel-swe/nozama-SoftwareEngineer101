@@ -34,11 +34,11 @@ public class App {
     app.get("/products/{productId}", ctx-> {
         var id = Integer.parseInt(ctx.pathParam("productId"));
         var productId = ProductRepository.findById(id);
-        ctx.result(String.valueOf(productId));});
+        ctx.json(String.valueOf(productId));});
 
     //GET PRODUCTS
     app.get("/products", ctx-> {
-        ctx.result(String.valueOf(ProductRepository.findAll()));
+        ctx.json(ProductRepository.findAll());
 
     });
 
@@ -46,6 +46,8 @@ public class App {
       app.post("/products", ctx -> {
           Product body = ctx.bodyAsClass(Product.class);
           Product product = ProductRepository.addProduct(body.getName(),body.getDescription(),body.getPrice(), body.getStockQuantity(), body.getImageURL());
+          ctx.status(HttpStatus.ACCEPTED);
+          ctx.json(product);
 
       });
   };
