@@ -29,19 +29,29 @@ public class D2E3 {
         "/alarms",
         ctx -> {
           // TODO
+          ctx.status(200);
+          ctx.json(AlarmRepository.findAll());
         });
 
     app.get(
         "/alarms/{id}",
         ctx -> {
           // TODO
+          var id = Integer.parseInt(ctx.pathParam("id"));
+          ctx.json(AlarmRepository.findById(id));
+
+
+
         });
 
     app.post(
-        "/alarms",
-        ctx -> {
-          // TODO
-        });
+            "/alarms",
+            ctx -> {
+              // TODO
+              Alarm body = ctx.bodyAsClass(Alarm.class);
+              Alarm alarm= AlarmRepository.create(body.getTime(), body.getMessage());
+              ctx.status(201);
+              ctx.json(alarm);});
 
     return app;
   }
