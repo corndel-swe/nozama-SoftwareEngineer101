@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductRepository {
-    public static String addProduct(String name, String description, float price, int stock, String url) throws SQLException {
+    public static Product addProduct(String name, String description, float price, int stock, String url) throws SQLException {
         String json = "{ \"name\" :" + name + ",\"description\" :" + description + ",\"price\" :" + price + ",\"stockQuantity\" :" + stock + ",\"imageURL\" :" + url + "}";
 
         var query = "INSERT INTO products (name,description,price,stockQuantity, imageURL) VALUES(" + name + "," + description + "," + price + "," + stock + "," + url + ")";
@@ -17,7 +17,8 @@ public class ProductRepository {
         try (var con = DB.getConnection();
              var stmt = con.createStatement();
              var rs = stmt.executeQuery(query)){
-            return rs.toString();
+            var id = rs.getInt("id");
+            return new Product(id, name, description, price, stock, url);
         }
 }
     public static List<Product> findAll() throws SQLException {
@@ -61,6 +62,30 @@ public class ProductRepository {
 
         }
 
+    }
+
+
+
+    public static List<Product> findByCategory(String categoryName) throws SQLException {
+        var query = "SELECT id, name, description, price, stockQuantity, imageURL FROM products INNER JOIN product_categories ON product_categories.productId = products.id INNER JOIN categories ON categories.id = product_categories.categoryId WHERE categories.name =" + categoryName;
+
+        try (var con = DB.getConnection();
+             var stmt = con.createStatement();
+             var rs = stmt.executeQuery(query)) {
+
+            var products = new ArrayList<Product>();
+            while (rs.next()) {
+                var id = rs.getInt("id");
+                var name = rs.getString("name");
+                var description = rs.getString("description");
+                var price = rs.getFloat("price");
+                var stockQuantity = rs.getInt("stockQuantity");
+                var imageURL = rs.getString("imageURL");
+
+                products.add(new Product(id, name, description, price, stockQuantity, imageURL));
+            }
+            return products;
+        }
     }
 
 };
