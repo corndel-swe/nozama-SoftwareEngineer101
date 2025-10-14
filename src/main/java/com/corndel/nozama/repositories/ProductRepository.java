@@ -64,8 +64,6 @@ public class ProductRepository {
 
     }
 
-
-
     public static List<Product> findByCategory(String categoryName) throws SQLException {
         var query = "SELECT id, name, description, price, stockQuantity, imageURL FROM products INNER JOIN product_categories ON product_categories.productId = products.id INNER JOIN categories ON categories.id = product_categories.categoryId WHERE categories.name =" + categoryName;
 
