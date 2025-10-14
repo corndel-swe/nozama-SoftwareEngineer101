@@ -1,8 +1,11 @@
 package com.corndel.nozama;
 
+import com.corndel.nozama.models.Product;
+import com.corndel.nozama.repositories.ProductRepository;
 import com.corndel.nozama.repositories.UserRepository;
 import io.javalin.Javalin;
 import io.javalin.http.HttpStatus;
+
 
 public class App {
   private Javalin app;
@@ -27,7 +30,25 @@ public class App {
           var user = UserRepository.findById(id);
           ctx.status(HttpStatus.IM_A_TEAPOT).json(user);
         });
-  }
+    //GET PRODUCT ID
+    app.get("/products/{productId}", ctx-> {
+        var id = Integer.parseInt(ctx.pathParam("productId"));
+        var productId = ProductRepository.findById(id);
+        ctx.result(String.valueOf(productId));});
+
+    //GET PRODUCTS
+    app.get("/products", ctx-> {
+        ctx.result(String.valueOf(ProductRepository.findAll()));
+
+    });
+
+    //POST PRODUCTS
+      app.post("/products", ctx -> {
+          Product body = ctx.bodyAsClass(Product.class);
+          Product product = ProductRepository.addProduct(body.getName(),body.getDescription(),body.getPrice(), body.getStockQuantity(), body.getImageURL());
+
+      });
+  };
 
   public Javalin javalinApp() {
     return app;

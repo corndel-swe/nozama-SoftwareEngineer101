@@ -50,7 +50,7 @@ public class D2E3 {
               // TODO
               Alarm body = ctx.bodyAsClass(Alarm.class);
               Alarm alarm= AlarmRepository.create(body.getTime(), body.getMessage());
-              ctx.status(201);
+              ctx.status(201); //using HTTP ENUM instead of hardcode;
               ctx.json(alarm);});
 
     return app;
