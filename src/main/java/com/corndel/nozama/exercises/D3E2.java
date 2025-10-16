@@ -35,7 +35,7 @@ public class D3E2 {
      */
     public void updateUsername(String newUsername, String passwordAttempt) throws Exception {
       // TODO: If newUsername is not given, throw a BadRequestResponse
-      if (newUsername == null) {
+      if (newUsername == null || newUsername.isBlank()) {
         throw new BadRequestResponse("Please enter a name");
       }
 
@@ -49,8 +49,7 @@ public class D3E2 {
 
           // TODO: If newUsername is given and passwordAttempt is correct, update the
           // username
-      if (Objects.equals(passwordAttempt, password) && !Objects.equals(newUsername, "")) {
-        username = newUsername;}
+        username = newUsername;
         }
       }
 }
