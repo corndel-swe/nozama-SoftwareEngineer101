@@ -13,6 +13,15 @@ public class Product {
     public Product() {
     };
 
+    public Product(String name, String description, String imageURL, float price, int stockQuantity) {
+        this.name = name;
+        this.description = description;
+        this.imageURL = imageURL;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+
+    }
+
     public Product(Integer id, String name, String description, float price, int stockQuantity, String imageURL) {
             this.id = id;
             this.name = name;
@@ -61,4 +70,20 @@ public class Product {
         public void setImageURL(String imageURL) {
             this.imageURL = imageURL;
         }
-}
+
+        public void setId(Integer newId){
+        this.id = newId;
+        }
+
+        @Override
+        public String toString() {
+            return "Products{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", stockQuantity=" + stockQuantity +
+                ", imageURL='" + imageURL + '\'' +
+                '}';
+        }
+        }
