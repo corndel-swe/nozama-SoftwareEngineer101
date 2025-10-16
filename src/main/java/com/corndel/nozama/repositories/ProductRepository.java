@@ -6,35 +6,43 @@ import com.corndel.nozama.models.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductRepository {
-    public static Product addProduct(String name, String description, float price, int stock, String url) throws SQLException {
-        String json = "{ \"name\" :" + name + ",\"description\" :" + description + ",\"price\" :" + price + ",\"stockQuantity\" :" + stock + ",\"imageURL\" :" + url + "}";
-
+    public static Product addProduct(Product product) throws SQLException {
+        //String json = "{ \"name\" :" + name + ",\"description\" :" + description + ",\"price\" :" + price + ",\"stockQuantity\" :" + stock + ",\"imageURL\" :" + url + "}";
+        // String name, String description, float price, int stock, String url
 //        var query = "INSERT INTO products (name,description,price,stockQuantity, imageURL) VALUES(" + name + "," + description + "," + price + "," + stock + "," + url + ")";
-        var query = "INSERT INTO products (name,description,price,stockQuantity, imageURL) VALUES (?,?,?,?,?)";
+        var query = "INSERT INTO products (name,description,price,stockQuantity, imageURL) VALUES (?,?,?,?,?) RETURNING id";
 
         try (Connection connection = DB.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query))
 
 
 
-        { preparedStatement.setString(1, name);
-            preparedStatement.setString(2, description);
-            preparedStatement.setFloat(3, price);
-            preparedStatement.setInt(4, stock);
-            preparedStatement.setString(5, url);
+        { preparedStatement.setString(1, product.getName());
+            preparedStatement.setString(2, product.getDescription());
+            preparedStatement.setFloat(3, product.getPrice());
+            preparedStatement.setInt(4, product.getStockQuantity());
+            preparedStatement.setString(5, product.getImageURL());
 
-            try ( var rs = preparedStatement.executeQuery(query)) {
+            System.out.println(preparedStatement);
 
-                var id = rs.getInt("id");
-                return new Product(id, name, description, price, stock, url);}
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+
+                product.setId(rs.getInt("id"));
+                System.out.println(product);
+                return product;
+            }
             }
 
 }
+
+
+
 
 
     public static List<Product> findAll() throws SQLException {
@@ -100,5 +108,15 @@ public class ProductRepository {
             return products;
         }
     }
+    public static void main (String[] args){
+        Product producttoAdd = new Product("name", "desc","url", 200.5f, 100);
+        try {
+            Product addedProduct = addProduct(producttoAdd);
+            System.out.println(addedProduct);
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
 
-};
+    }
+
+}

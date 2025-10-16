@@ -6,6 +6,8 @@ import com.corndel.nozama.repositories.UserRepository;
 import io.javalin.Javalin;
 import io.javalin.http.HttpStatus;
 
+import java.sql.SQLException;
+
 
 public class App {
   private Javalin app;
@@ -44,10 +46,14 @@ public class App {
 
     //POST PRODUCTS
       app.post("/products", ctx -> {
-          Product body = ctx.bodyAsClass(Product.class);
-          Product product = ProductRepository.addProduct(body.getName(),body.getDescription(),body.getPrice(), body.getStockQuantity(), body.getImageURL());
-          ctx.status(HttpStatus.ACCEPTED);
-          ctx.json(product);
+          try {
+              Product body = ctx.bodyAsClass(Product.class);
+              Product product = ProductRepository.addProduct(body);
+              ctx.status(HttpStatus.ACCEPTED);
+              ctx.json(product);
+          } catch (SQLException e){
+              ctx.status(500).json("Database error: " + e.getMessage());
+          }
 
       });
   };
