@@ -22,7 +22,6 @@ public class ProductRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(query))
 
 
-
         { preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, product.getDescription());
             preparedStatement.setFloat(3, product.getPrice());
@@ -69,7 +68,7 @@ public class ProductRepository {
 
     public static Product findById(int id) throws SQLException {
 
-        var querySingleID = "SELECT * FROM users WHERE id =" + id;
+        var querySingleID = "SELECT * FROM products WHERE id =" + id;
 
         try (var con = DB.getConnection();
              var stmt = con.createStatement();
@@ -87,8 +86,11 @@ public class ProductRepository {
 
     }
 
-    public static List<Product> findByCategory(String categoryName) throws SQLException {
-        var query = "SELECT id, name, description, price, stockQuantity, imageURL FROM products INNER JOIN product_categories ON product_categories.productId = products.id INNER JOIN categories ON categories.id = product_categories.categoryId WHERE categories.name =" + categoryName;
+    public static List<Product> findByCategory(int categoryId) throws SQLException {
+        var query = "SELECT products.id, products.name, products.description, products.price, products.stockQuantity, products.imageURL FROM products " +
+                "INNER JOIN product_categories ON product_categories.productId = products.id " +
+                "INNER JOIN categories ON categories.id = product_categories.categoryId " +
+                "WHERE product_categories.categoryId =" + categoryId;
 
         try (var con = DB.getConnection();
              var stmt = con.createStatement();
@@ -108,6 +110,9 @@ public class ProductRepository {
             return products;
         }
     }
+
+
+
     public static void main (String[] args){
         Product producttoAdd = new Product("name", "desc","url", 200.5f, 100);
         try {

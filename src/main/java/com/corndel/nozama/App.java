@@ -56,6 +56,12 @@ public class App {
           }
 
       });
+      app.get("/products/category/{categoryId}", ctx ->{
+          var id = ctx.pathParam("categoryId");
+          var category = ProductRepository.findByCategory(Integer.parseInt(id));
+          ctx.status(HttpStatus.ACCEPTED).json(category);
+
+      });
   };
 
   public Javalin javalinApp() {
