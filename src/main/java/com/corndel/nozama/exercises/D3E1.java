@@ -2,6 +2,9 @@ package com.corndel.nozama.exercises;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
+
+import java.util.Map;
 
 public class D3E1 {
   // This is our counter:
@@ -27,6 +30,9 @@ class CounterController {
    */
   public static void getCounter(Context ctx) {
     // TODO
+    var count = D3E1.counter.getCount();
+    ctx.json(D3E1.counter);
+    ctx.status(HttpStatus.ACCEPTED);
   }
 
   /**
@@ -34,6 +40,11 @@ class CounterController {
    */
   public static void increment(Context ctx) {
     // TODO
+    int countIncrement = D3E1.counter.getCount() + 1;
+    D3E1.counter.setCount(countIncrement);
+    ctx.json(Map.of("count", countIncrement));
+    ctx.status(200);
+
   }
 }
 
