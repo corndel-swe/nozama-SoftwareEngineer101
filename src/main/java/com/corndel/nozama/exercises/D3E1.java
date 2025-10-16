@@ -31,7 +31,7 @@ class CounterController {
   public static void getCounter(Context ctx) {
     // TODO
     var count = D3E1.counter.getCount();
-    ctx.json(Map.of("count", count));
+    ctx.json(D3E1.counter);
     ctx.status(HttpStatus.ACCEPTED);
   }
 
@@ -44,9 +44,6 @@ class CounterController {
     D3E1.counter.setCount(countIncrement);
     ctx.json(Map.of("count", countIncrement));
     ctx.status(200);
-
-
-
 
   }
 }
