@@ -54,44 +54,54 @@ public class UserRepository {
     }
   }
 
-  //DELETE USER
-  public static User deleteUser (User user) throws SQLException {
-    var query = "DELETE * FROM users WHERE users.username = ?";
 
-    try (Connection connection = DB.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-      preparedStatement.setString(1, user.getUsername());
-  public static User createUser(User user) throws SQLException {
-   var query = "INSERT INTO users (username,firstName, lastName, email, avatar, password) VALUES (?,?,?,?,?,?) RETURNING id";
+    public static User createUser(User user) throws SQLException {
+        var query = "INSERT INTO users (username,firstName, lastName, email, avatar, password) VALUES (?,?,?,?,?,?) RETURNING id";
 
-    try (Connection connection = DB.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(query))
+        try (Connection connection = DB.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getFirstName());
+            preparedStatement.setString(3, user.getLastName());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setString(5, user.getAvatar());
+            preparedStatement.setString(6, user.getPassword());
 
+            System.out.println(preparedStatement);
 
-    { preparedStatement.setString(1, user.getUsername());
-      preparedStatement.setString(2, user.getFirstName());
-      preparedStatement.setString(3, user.getLastName());
-      preparedStatement.setString(4, user.getEmail());
-      preparedStatement.setString(5, user.getAvatar());
+            try (ResultSet rs = preparedStatement.executeQuery()) {
 
+                user.setId(rs.getInt("id"));
+                System.out.println(user);
+                return user;
+            }
+        }
 
-      System.out.println(preparedStatement);
-      ResultSet rs = preparedStatement.executeQuery();
-      return user;
-      }
-    }
-  };
-      preparedStatement.setString(6, user.getPassword());
-
-      System.out.println(preparedStatement);
-
-      try (ResultSet rs = preparedStatement.executeQuery()) {
-
-        user.setId(rs.getInt("id"));
-        System.out.println(user);
-        return user;
-      }
     }
 
-  }
-};
+
+    //DELETE USER
+    public static User deleteUser(User user) throws SQLException {
+        var query = "DELETE * FROM users WHERE users.username = ?";
+
+        try (Connection connection = DB.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+
+            {
+                preparedStatement.setString(1, user.getUsername());
+                preparedStatement.setString(2, user.getFirstName());
+                preparedStatement.setString(3, user.getLastName());
+                preparedStatement.setString(4, user.getEmail());
+                preparedStatement.setString(5, user.getAvatar());
+
+
+                System.out.println(preparedStatement);
+                ResultSet rs = preparedStatement.executeQuery();
+                return user;
+            }
+
+        }}}
+
+
+
