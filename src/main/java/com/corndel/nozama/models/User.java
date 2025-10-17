@@ -29,6 +29,7 @@ public class User {
     this.lastName = lastName;
     this.email = email;
     this.avatar = avatar;
+
   }
 
   public Integer getId() {

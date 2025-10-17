@@ -44,7 +44,7 @@ public class D3E2 {
         throw new UnauthorizedResponse("Please enter password");}
 
         // TODO: If passwordAttempt is given but not correct, throw a ForbiddenResponse
-      if (!Objects.equals(passwordAttempt, password)) {
+      if (!passwordAttempt.equals(password)) {
         throw new ForbiddenResponse("Password entered is incorrect");}
 
           // TODO: If newUsername is given and passwordAttempt is correct, update the

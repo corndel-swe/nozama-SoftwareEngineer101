@@ -54,6 +54,13 @@ public class UserRepository {
     }
   }
 
+  //DELETE USER
+  public static User deleteUser (User user) throws SQLException {
+    var query = "DELETE * FROM users WHERE users.username = ?";
+
+    try (Connection connection = DB.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+      preparedStatement.setString(1, user.getUsername());
   public static User createUser(User user) throws SQLException {
    var query = "INSERT INTO users (username,firstName, lastName, email, avatar, password) VALUES (?,?,?,?,?,?) RETURNING id";
 
@@ -66,6 +73,14 @@ public class UserRepository {
       preparedStatement.setString(3, user.getLastName());
       preparedStatement.setString(4, user.getEmail());
       preparedStatement.setString(5, user.getAvatar());
+
+
+      System.out.println(preparedStatement);
+      ResultSet rs = preparedStatement.executeQuery();
+      return user;
+      }
+    }
+  };
       preparedStatement.setString(6, user.getPassword());
 
       System.out.println(preparedStatement);
