@@ -61,6 +61,14 @@ public class UserRepository {
     try (Connection connection = DB.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(query)) {
       preparedStatement.setString(1, user.getUsername());
+  public static User createUser(User user) throws SQLException {
+   var query = "INSERT INTO users (username,firstName, lastName, email, avatar, password) VALUES (?,?,?,?,?,?) RETURNING id";
+
+    try (Connection connection = DB.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query))
+
+
+    { preparedStatement.setString(1, user.getUsername());
       preparedStatement.setString(2, user.getFirstName());
       preparedStatement.setString(3, user.getLastName());
       preparedStatement.setString(4, user.getEmail());
@@ -73,3 +81,17 @@ public class UserRepository {
       }
     }
   };
+      preparedStatement.setString(6, user.getPassword());
+
+      System.out.println(preparedStatement);
+
+      try (ResultSet rs = preparedStatement.executeQuery()) {
+
+        user.setId(rs.getInt("id"));
+        System.out.println(user);
+        return user;
+      }
+    }
+
+  }
+};

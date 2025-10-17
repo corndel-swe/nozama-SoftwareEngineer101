@@ -7,6 +7,20 @@ public class User {
   private String lastName;
   private String email;
   private String avatar;
+  private String password;
+
+  public User(){
+  };
+
+  //used when creating user
+  public User(String username, String firstName, String lastName, String email, String avatar, String password) {
+    this.username = username;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.avatar = avatar;
+    this.password = password;
+  }
 
   public User(Integer id, String username, String firstName, String lastName, String email, String avatar) {
     this.id = id;
@@ -21,6 +35,8 @@ public class User {
   public Integer getId() {
     return id;
   }
+
+  public void setId(Integer newId) { this.id = newId;}
 
   public String getUsername() {
     return username;
@@ -61,4 +77,13 @@ public class User {
   public void setAvatar(String avatar) {
     this.avatar = avatar;
   }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
 }
