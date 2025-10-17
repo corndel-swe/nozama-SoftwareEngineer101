@@ -1,7 +1,12 @@
 package com.corndel.nozama.repositories;
 
 import com.corndel.nozama.DB;
+import com.corndel.nozama.models.Product;
 import com.corndel.nozama.models.User;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,4 +53,23 @@ public class UserRepository {
       return new User(id, username, firstName, lastName, email, avatar);
     }
   }
-};
+
+  //DELETE USER
+  public static User deleteUser (User user) throws SQLException {
+    var query = "DELETE * FROM users WHERE users.username = ?";
+
+    try (Connection connection = DB.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+      preparedStatement.setString(1, user.getUsername());
+      preparedStatement.setString(2, user.getFirstName());
+      preparedStatement.setString(3, user.getLastName());
+      preparedStatement.setString(4, user.getEmail());
+      preparedStatement.setString(5, user.getAvatar());
+
+
+      System.out.println(preparedStatement);
+      ResultSet rs = preparedStatement.executeQuery();
+      return user;
+      }
+    }
+  };
