@@ -1,6 +1,7 @@
 package com.corndel.nozama;
 
 import com.corndel.nozama.models.Product;
+import com.corndel.nozama.models.User;
 import com.corndel.nozama.repositories.ProductRepository;
 import com.corndel.nozama.repositories.UserRepository;
 import io.javalin.Javalin;
@@ -32,6 +33,22 @@ public class App {
           var user = UserRepository.findById(id);
           ctx.status(HttpStatus.IM_A_TEAPOT).json(user);
         });
+
+
+    app.post("/users",
+            ctx ->{
+                try {
+                    User body = ctx.bodyAsClass(User.class);
+                    User user = UserRepository.createUser(body);
+                    ctx.status(HttpStatus.ACCEPTED);
+                    ctx.json(user);
+                } catch (SQLException e){
+                    ctx.status(500).json("Database error: " + e.getMessage());
+                }
+            });
+
+
+
     //GET PRODUCT ID
     app.get("/products/{productId}", ctx-> {
         var id = Integer.parseInt(ctx.pathParam("productId"));
