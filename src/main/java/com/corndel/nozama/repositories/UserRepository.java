@@ -1,7 +1,12 @@
 package com.corndel.nozama.repositories;
 
 import com.corndel.nozama.DB;
+import com.corndel.nozama.models.Product;
 import com.corndel.nozama.models.User;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,5 +52,31 @@ public class UserRepository {
 
       return new User(id, username, firstName, lastName, email, avatar);
     }
+  }
+
+  public static User createUser(User user) throws SQLException {
+   var query = "INSERT INTO users (username,firstName, lastName, email, avatar, password) VALUES (?,?,?,?,?,?) RETURNING id";
+
+    try (Connection connection = DB.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query))
+
+
+    { preparedStatement.setString(1, user.getUsername());
+      preparedStatement.setString(2, user.getFirstName());
+      preparedStatement.setString(3, user.getLastName());
+      preparedStatement.setString(4, user.getEmail());
+      preparedStatement.setString(5, user.getAvatar());
+      preparedStatement.setString(6, user.getPassword());
+
+      System.out.println(preparedStatement);
+
+      try (ResultSet rs = preparedStatement.executeQuery()) {
+
+        user.setId(rs.getInt("id"));
+        System.out.println(user);
+        return user;
+      }
+    }
+
   }
 };
