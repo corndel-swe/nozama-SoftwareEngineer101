@@ -46,8 +46,16 @@ public class App {
                     ctx.status(500).json("Database error: " + e.getMessage());
                 }
             });
-
-
+//DELETE A USER
+    app.post("/users/{userId}", ctx -> {
+        try {
+        User body = ctx.bodyAsClass(User.class);
+        UserRepository.deleteUser(body);
+        ctx.json(body);
+        System.out.println("User has been deleted");
+        } catch (Exception e) {
+            throw new RuntimeException(e);}
+        });
 
     //GET PRODUCT ID
     app.get("/products/{productId}", ctx-> {

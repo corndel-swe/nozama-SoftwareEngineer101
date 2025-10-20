@@ -79,29 +79,23 @@ public class UserRepository {
 
     }
 
-
     //DELETE USER
-    public static User deleteUser(User user) throws SQLException {
-        var query = "DELETE * FROM users WHERE users.username = ?";
+    public static void deleteUser(User user) throws SQLException {
+        var query = "DELETE * FROM users WHERE users.id = ?";
 
         try (Connection connection = DB.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
+             var preparedStatement = connection.prepareStatement(query)) {
 
             {
-                preparedStatement.setString(1, user.getUsername());
-                preparedStatement.setString(2, user.getFirstName());
-                preparedStatement.setString(3, user.getLastName());
-                preparedStatement.setString(4, user.getEmail());
-                preparedStatement.setString(5, user.getAvatar());
+                preparedStatement.setInt(0, user.getId());
+                preparedStatement.executeUpdate();
 
 
-                System.out.println(preparedStatement);
-                ResultSet rs = preparedStatement.executeQuery();
-                return user;
             }
 
-        }}}
+        }
+  }
+}
 
 
 
